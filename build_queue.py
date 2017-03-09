@@ -1,32 +1,10 @@
 from collections import deque
 
-
-# def check_directions(game_board, y, x):
-
-
-# 	if y < game_board.size - 1:
-# 		if y + 1 == "M":
-# 			mine_count += 1
-
-# 	if x > 0:
-# 		if x - 1 == "M":
-# 			mine_count += 1
-
-# 	if x < game_board.size - 1:
-# 		if x + 1 == "M":
-# 			mine_count += 1
-
-
-# check the 4 directions
-# if none are equal to a mine, add to queue
-# otherwise, display number
-# also need to check if uncovered
-
 def check_cell(game_board, y, x, cover_board):
 	to_visit = deque()
 	seen = set()
 
-
+	count = 0
 	to_visit.append((y,x))
 	
 	while to_visit:
@@ -34,32 +12,16 @@ def check_cell(game_board, y, x, cover_board):
 		mine_count = 0
 		neighbors = deque()
 
-		if y < game_board.size - 1:
-			if game_board[y + 1][x] == "M":
-				mine_count += 1
+		for j in range(y-1, y+2):
+			for i in range(x-1, x+2):
 
-			elif (y+1, x) not in seen:
-				neighbors.append((y+1,x))
-				seen.add((y+1, x))
+				if is_valid_direction(game_board, j, i):
+					if game_board[j][i] == 'M':
+						mine_count += 1
 
-		if x > 0:
-			if game_board[y][x-1] == "M":
-				mine_count += 1
-
-			elif (y, x-1) not in seen:
-				neighbors.append((y,x-1))
-				seen.add((y, x-1))
-
-
-		if x < game_board.size - 1:
-			if game_board[y][x+1] == "M":
-				mine_count += 1
-
-			elif (y, x+1) not in seen:
-				neighbors.append((y,x+1))
-				seen.add((y, x+1))
-
-
+					elif (j, i) not in seen:
+						neighbors.append((j,i))
+						seen.add((j,i))
 
 		if mine_count == 0:
 			cover_board[y][x] = game_board[y][x]
@@ -70,11 +32,26 @@ def check_cell(game_board, y, x, cover_board):
 
 
 		print to_visit
+		count += 1
+
+	results = {'board': cover_board, 'count': count}
+
+	return results
+
+def is_valid_direction(game_board, y, x):
+
+	try:
+		game_board[y][x] 
+		return True
+
+	except IndexError:
+		return False
 
 
 
-	return cover_board
 
+
+	
 
 
 

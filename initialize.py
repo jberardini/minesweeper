@@ -17,23 +17,28 @@ guess = input('Please enter coordinates to guess: ')
 y = guess[0]
 x = guess[1]
 
-non_mine_count = 0
-
-keep_going = True
+non_mines_seen = 0
 
 
 
-while keep_going:
+while True:
 
 	if game_board[y][x] == 'M':
+		print "you hit a mine"
 		break
 
-	non_mine_count += 1
+	results = check_cell(game_board, y, x, cover_board)
 
-	if non_mine_count == game_board.mines:
+	new_board = results['board']
+	additional_non_mines = results['count']
+
+	non_mines_seen += additional_non_mines
+	print non_mines_seen
+
+	if non_mines_seen == (game_board.size**2 - game_board.mines):
+		print "you win!"
 		break
 
-	new_board = check_cell(game_board, y, x, cover_board)
 
 	for y in range(size):
 		print new_board[y]
